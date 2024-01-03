@@ -1,3 +1,4 @@
+import csv
 import time as t
 import math as m
 import matplotlib.pyplot as plt
@@ -59,16 +60,52 @@ def display_3D_map(X, Y, Z):
     print(end-start)
     print("\n")
 
+def ecrire_points_csv(points, filename):
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['X', 'Y', 'Z'])  # Écriture de l'en-tête
 
-# Exemple d'utilisation avec un puits de la forme x^2
-N=50#Complexité en O(N^2)
-X = [x for x in range(-N,N)]
-Y = [y for y in range(-N,N)]
-Z1 = [[(max(abs(x),abs(y)))**4 for x in X] for y in Y]
-Z =  [[(max(m.sin(x/10),m.sin(y/10)))**4 for x in X] for y in Y]
+        for point in points:
+            writer.writerow(point)
 
-display_2D_map(X, Y, Z)
-display_3D_map(X,Y,Z)
+def generer_points(N):
+    points = []
+    for x in range(-N, N + 1):
+        for y in range(-N, N + 1):
+            z = (max(abs(x),abs(y)))**4  # Exemple de fonction de z
+            points.append([x, y, z])
+    return points
+
+
+# ============= TESTS =============
+
+
+# Exemple d'utilisation avec un puits de la forme x^4 puis sinus bizarre
+N=10#Complexité en O(N^2)
+
+#X = [x for x in range(-N,N)]
+#Y = [y for y in range(-N,N)]
+#Z1 = [[(max(abs(x),abs(y)))**4 for x in X] for y in Y]
+#Z =  [[(max(m.sin(x/10),m.sin(y/10)))**4 for x in X] for y in Y]
+
+#display_2D_map(X, Y, Z)
+#display_3D_map(X,Y,Z)
+
+points = generer_points(N)
+
+start = t.time()
+#ecrire_points_csv(points, "./img/data.csv")
+end = t.time()
+print("temps :")
+print(end-start)
+
+#Pour écrire un fichier csv:
+#Pour N=2000 : 16 000 000pts : 6.2s 
+#378Mo pour 16 000 000 points donc x360 pour obtenir les données manipulables en 30min:
+#136 080Mo soit 136Go pour 5 740 000 000 points
+
+
+
 
 #Pour (2N)^2 pts : 2D, 3D
 
@@ -77,7 +114,7 @@ display_3D_map(X,Y,Z)
 #Pour 3000 pts : 4.43s, 6.04s
 
 #avec save_img :
-#Pour N=40000: 64 000 000pts: 19.36, 4.45 | limite des capacités de Matplotlib
+#Pour N=4000 : 64 000 000pts: 19.36, 4.45 | limite des capacités de Matplotlib
 #Pour N=3000 : 36 000 000pts: 11.04, 3.7
 #Pour N=2000 : 16 000 000pts : 5.63, 1.29
 #Pour N=1000 : 4 000 000pts : 4.43s, 1.15s
