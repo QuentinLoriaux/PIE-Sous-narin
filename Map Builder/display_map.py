@@ -16,12 +16,14 @@ def display_2D_map(X, Y, Z):
     Z = np.array(Z)
     Z = Z.reshape(len(y_unique), len(x_unique))
 
+
+
     # Affichage de la carte colorée
     plt.pcolormesh(X, Y, Z, cmap='coolwarm')
     plt.colorbar()  # Ajout d'une barre de couleur pour indiquer l'échelle des valeurs
 
     #enregistrement
-    plt.savefig("./img/01_2D.png") 
+    plt.savefig("./img/01_2D.png")
 
     end = t.time()
     print("temps 2D :")
@@ -29,7 +31,7 @@ def display_2D_map(X, Y, Z):
     print("\n")
 
     plt.show()
-    
+
 
 def display_3D_map(X, Y, Z):
     start = t.time()
@@ -52,13 +54,13 @@ def display_3D_map(X, Y, Z):
     ax.set_zlabel('Profondeur')
 
     #enregistrement
-    plt.savefig("./img/01_3D.png") 
-
+    plt.savefig("./img/01_3D.png")
 
     end = t.time()
     print("temps 3D :")
     print(end-start)
     print("\n")
+
 
 def ecrire_points_csv(points, filename):
     with open(filename, mode='w', newline='') as file:
@@ -68,6 +70,7 @@ def ecrire_points_csv(points, filename):
         for point in points:
             writer.writerow(point)
 
+
 def generer_points(N):
     points = []
     for x in range(-N, N + 1):
@@ -75,6 +78,37 @@ def generer_points(N):
             z = (max(abs(x),abs(y)))**4  # Exemple de fonction de z
             points.append([x, y, z])
     return points
+
+
+def concatenate_maps():
+    dim = int(input("Insérer le nombre de dimension de la carte (2 pour 2D, 3 pour 3D) : "))
+    if dim != 2 and dim != 3:
+        print("Erreur : dimension non reconnue")
+        return
+    
+    lst = []
+    add = input("Insérer le nom du CSV")
+    while (add != "fini"):
+        lst.append(add)
+        add = (input("Insérer le nom du CSV (fini si aucun rajout): "))
+        
+    X = []
+    Y = []
+    Z = []
+    
+    for k in range(len(lst)):
+        with open(lst[k], mode='r', newline='\n') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                X.append(row[0])
+                Y.append(row[1])
+                Z.append(row[2])
+    if dim == 2:
+        display_2D_map(X, Y, Z)
+    elif dim == 3:
+        display_3D_map(X, Y, Z)
+
+
 
 
 # ============= TESTS =============
@@ -98,6 +132,7 @@ start = t.time()
 end = t.time()
 print("temps :")
 print(end-start)
+concatenate_maps()
 
 #Pour écrire un fichier csv:
 #Pour N=2000 : 16 000 000pts : 6.2s 
