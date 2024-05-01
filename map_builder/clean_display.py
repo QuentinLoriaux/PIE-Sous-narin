@@ -31,6 +31,7 @@ def display3D(data, res = 500):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Profondeur')
+    fig1 = plt.gcf()
     plt.show()
 
     #====== Save the figure ======
@@ -42,7 +43,7 @@ def display3D(data, res = 500):
         num = 0
         while os.path.exists("./img/3D_"+str(num)+".png") :
             num += 1  
-        plt.savefig("./img/3D_"+str(num)+".png")
+        fig1.savefig("./img/3D_"+str(num)+".png")
 
 # =================================================== 2D DISPLAY ===================================================
 
@@ -61,6 +62,7 @@ def display2D(data, res = 500):
 
     #====== display ======
     print("temps 2D :" + str(round(t.time()-start, 3)) +"\n")
+    fig1 = plt.gcf()
     plt.show()
 
     #====== Save the figure ======
@@ -72,7 +74,7 @@ def display2D(data, res = 500):
         num = 0
         while os.path.exists("./img/2D_"+str(num)+".png") :
             num += 1  
-        plt.savefig("./img/2D_"+str(num)+".png")
+        fig1.savefig("./img/2D_"+str(num)+".png")
 
 
 
